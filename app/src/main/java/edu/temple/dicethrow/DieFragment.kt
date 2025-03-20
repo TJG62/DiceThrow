@@ -12,7 +12,6 @@ import kotlin.random.Random
 class DieFragment : Fragment() {
 
     val DIESIDE = "sidenumber"
-    val CURRENT_DIE_VALUE = "currentValue"
 
     lateinit var dieTextView: TextView
 
@@ -27,14 +26,13 @@ class DieFragment : Fragment() {
                 dieSides = this
             }
         }
-        dieViewModel = ViewModelProvider(this)[DieViewModel::class.java]
+        dieViewModel = ViewModelProvider(requireActivity())[DieViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_die, container, false).apply {
             dieTextView = findViewById(R.id.dieTextView)
         }
@@ -48,18 +46,11 @@ class DieFragment : Fragment() {
             dieTextView.text = it.toString()
         }
 
-
-
-
-
         if(dieViewModel.getCurrentIndex().value == null)
-            throwDie()
+            dieViewModel.rollDie()
 
     }
 
-    fun throwDie() {
-        dieViewModel.setCurrentIndex(Random.nextInt(dieSides) + 1)
-    }
 
     fun throwDie(dieNum: Int){
         dieTextView.text = dieNum.toString()
